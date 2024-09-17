@@ -11,29 +11,29 @@ public class DataEntryAppDatabase {
 
     public static void main(String[] args) {
         // Frame
-        JFrame frame = new JFrame("Data Entry");
+        JFrame frame = new JFrame("Ponto");
         frame.setSize(300, 200);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new GridLayout(4, 2));
 
         // labels e campos de textos
-        JLabel nameLabel = new JLabel("Name:");
+        JLabel nameLabel = new JLabel("Nome:");
         JTextField nameField = new JTextField();
-        JLabel ageLabel = new JLabel("Age:");
-        JTextField ageField = new JTextField();
-        JLabel cityLabel = new JLabel("City:");
-        JTextField cityField = new JTextField();
+        JLabel startLabel = new JLabel("Entrada:");
+        JTextField startField = new JTextField();
+        JLabel endLabel = new JLabel("Saída:");
+        JTextField endField = new JTextField();
 
         // Create save button
-        JButton saveButton = new JButton("Save");
+        JButton saveButton = new JButton("Salvar");
 
         // Adicionando componente
         frame.add(nameLabel);
         frame.add(nameField);
-        frame.add(ageLabel);
-        frame.add(ageField);
-        frame.add(cityLabel);
-        frame.add(cityField);
+        frame.add(startLabel);
+        frame.add(startField);
+        frame.add(endLabel);
+        frame.add(endField);
         frame.add(new JLabel()); 
         frame.add(saveButton);
 
@@ -43,21 +43,21 @@ public class DataEntryAppDatabase {
             public void actionPerformed(ActionEvent e) {
                 // Valor dos camos de texto
                 String name = nameField.getText();
-                String age = ageField.getText();
-                String city = cityField.getText();
+                String start = startField.getText();
+                String end = endField.getText();
 
                 // Salvando no SQlite
                 try (Connection connection = DriverManager.getConnection("jdbc:sqlite:mydatabase.db")) {
-                    String sql = "INSERT INTO users (name, age, city) VALUES (?, ?, ?)";
+                    String sql = "INSERT INTO users (nome, entrada, saída) VALUES (?, ?, ?)";
                     try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
                         pstmt.setString(1, name);
-                        pstmt.setInt(2, Integer.parseInt(age));
-                        pstmt.setString(3, city);
+                        pstmt.setInt(2, Integer.parseInt(start));
+                        pstmt.setString(3, end);
                         pstmt.executeUpdate();
-                        JOptionPane.showMessageDialog(frame, "Data saved successfully!");
+                        JOptionPane.showMessageDialog(frame, "Ponto Registrado com Sucesso!");
                     }
                 } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(frame, "Error saving data: " + ex.getMessage());
+                    JOptionPane.showMessageDialog(frame, "Erro ao salvar: " + ex.getMessage());
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(frame, "Invalid age format");
                 }
